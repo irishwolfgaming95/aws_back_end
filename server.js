@@ -19,6 +19,23 @@ mailer.extend(app, {
 });
 
 
+app.get('/', function (req, res, next) {
+  app.mailer.send('email', {
+    to: 'valkyire8@gmail.com', // REQUIRED. This can be a comma delimited string just like a normal email to field. 
+    subject: 'Test Email', // REQUIRED.
+    otherProperty: 'Other Property' // All additional properties are also passed to the template as local variables.
+  }, function (err) {
+    if (err) {
+      // handle error
+      console.log(err);
+      res.send('There was an error sending the email');
+      return;
+    }
+    res.send('Email Sent');
+  });
+});
+
+
 app.listen(5000, function () {
   console.log('local server active!');
 });
