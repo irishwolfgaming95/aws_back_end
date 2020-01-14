@@ -18,6 +18,9 @@ mailer.extend(app, {
   }
 });
 
+app.set('views', __dirname + '/views');
+app.set('view engine', 'pug');
+
 
 app.get('/', function (req, res, next) {
   app.mailer.send('email', {
