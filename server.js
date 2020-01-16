@@ -21,6 +21,16 @@ mailer.extend(app, {
 app.set('views', __dirname + '/views');
 app.set('view engine', 'pug');
 
+app.use( function(req, res, next) {
+
+  if (req.originalUrl && req.originalUrl.split("/").pop() === 'favicon.ico') {
+    return res.sendStatus(204);
+  }
+
+  return next();
+
+});
+
 
 app.get('/', function (req, res, next) {
   app.mailer.send('email', {
