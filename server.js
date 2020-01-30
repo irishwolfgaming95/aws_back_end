@@ -1,5 +1,7 @@
 const express = require('express');
 const app = express();
+const request = require('request');
+const bodyParser = require('body-parser');
 
 const logger = require('morgan');
 app.use(logger('dev'));
@@ -17,6 +19,9 @@ mailer.extend(app, {
     pass: ''
   }
 });
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}));
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'pug');
