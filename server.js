@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const request = require('request');
 const bodyParser = require('body-parser');
+const multer = require('multer');
+const upload = multer();
 
 const logger = require('morgan');
 app.use(logger('dev'));
@@ -22,6 +24,7 @@ mailer.extend(app, {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
+app.use(upload.array());
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'pug');
@@ -37,11 +40,14 @@ app.use( function(req, res, next) {
 });
 
 
-app.get('/', function (req, res, next) {
+app.post('/mail', function (req, res, next) {
+  console.log('body',req.body);
   app.mailer.send('email', {
     to: 'valkyire8@gmail.com', // REQUIRED. This can be a comma delimited string just like a normal email to field. 
     subject: 'Test Email', // REQUIRED.
-    otherProperty: 'Other Property' // All additional properties are also passed to the template as local variables.
+    name: req.body.name,
+    email: req.body.email,
+    message: req.body.message // All additional properties are also passed to the template as local variables.
   }, function (err) {
     if (err) {
       // handle error
