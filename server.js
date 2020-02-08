@@ -9,8 +9,8 @@ const logger = require('morgan');
 app.use(logger('dev'));
 
 const mailer = require('express-mailer');
- 
-mailer.extend(app, {
+
+let mailConfig = {
   from: 'no-reply@example.com',
   host: 'smtp.gmail.com', // hostname
   secureConnection: true, // use SSL
@@ -20,7 +20,9 @@ mailer.extend(app, {
     user: 'valkyire8@gmail.com',
     pass: process.env.EMAIL_PASSWORD
   }
-});
+}
+console.log(mailConfig);
+mailer.extend(app,mailConfig);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
@@ -42,6 +44,7 @@ app.use( function(req, res, next) {
 
 app.post('/mail', function (req, res, next) {
   console.log('body',req.body);
+
   app.mailer.send('email', {
     to: 'valkyire8@gmail.com', // REQUIRED. This can be a comma delimited string just like a normal email to field. 
     subject: 'Test Email', // REQUIRED.
